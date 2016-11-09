@@ -39,7 +39,7 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			i4HHEsLfWHP3aqevLe8UIVfBksM=
+			brWKwNDxszfojtL0/viK+WFyPhU=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -57,7 +57,7 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			mKQm9bXR2iLcHEL0u0MopkOLHkQ=
+			/rj9At6gXN5vAz0ppxGXdjnYApo=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -68,7 +68,7 @@
 		</data>
 		<key>Frameworks/Lib.framework/Lib</key>
 		<data>
-		tL8ylOmkyYkqSYz4aWjqMKFP1RA=
+		pgLIZh30YQl9Jcm3QqDGoKQDK28=
 		</data>
 		<key>Frameworks/Lib.framework/_CodeSignature/CodeResources</key>
 		<data>
@@ -143,11 +143,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			i4HHEsLfWHP3aqevLe8UIVfBksM=
+			brWKwNDxszfojtL0/viK+WFyPhU=
 			</data>
 			<key>hash2</key>
 			<data>
-			BXSfH52iWQ9MkPjyBOqj9BBMdgFyepxDR7iK3vY1jns=
+			s3+u9YY2ahE4bGHqdnWP2eMJ8zBh1f9HJ3Vr+EHlQsY=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -169,11 +169,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			mKQm9bXR2iLcHEL0u0MopkOLHkQ=
+			/rj9At6gXN5vAz0ppxGXdjnYApo=
 			</data>
 			<key>hash2</key>
 			<data>
-			jNcsaTlD/R4z/0rCU84wSbl5FD+FOhoTQGHIVKSyXTk=
+			tu+reuiC0kW1pYpDg4ODmG1RIqqRlgT2mMj8NMfFFwQ=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -193,11 +193,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			tL8ylOmkyYkqSYz4aWjqMKFP1RA=
+			pgLIZh30YQl9Jcm3QqDGoKQDK28=
 			</data>
 			<key>hash2</key>
 			<data>
-			noYiND7BKO9Q2znuqUhf93AY5FhJVtFnZ991j2CpEqg=
+			2H60loKVVxDH1TU/wh/iVydjbK3eCmG+Lr2DfpwIY7o=
 			</data>
 		</dict>
 		<key>Frameworks/Lib.framework/_CodeSignature/CodeResources</key>

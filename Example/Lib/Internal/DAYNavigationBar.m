@@ -60,6 +60,7 @@
     self.prevButton.translatesAutoresizingMaskIntoConstraints = NO;
     self.prevButton.tintColor = [UIColor grayColor];
     [self.prevButton setTitle:@"<" forState:UIControlStateNormal];
+    [self.prevButton setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
     [self.prevButton addTarget:self action:@selector(prevButtonDidTap:) forControlEvents:UIControlEventTouchUpInside];
     
     [self addSubview:self.prevButton];
@@ -97,6 +98,7 @@
     self.nextButton.translatesAutoresizingMaskIntoConstraints = NO;
     self.nextButton.tintColor = [UIColor grayColor];
     [self.nextButton setTitle:@">" forState:UIControlStateNormal];
+    [self.nextButton setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
     [self.nextButton addTarget:self action:@selector(nextButtonDidTap:) forControlEvents:UIControlEventTouchUpInside];
     
     [self addSubview:self.nextButton];

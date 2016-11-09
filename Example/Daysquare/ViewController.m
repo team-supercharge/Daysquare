@@ -22,16 +22,16 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     [self.calendarView addTarget:self action:@selector(calendarViewDidChange:) forControlEvents:UIControlEventValueChanged];
-    self.calendarView.boldPrimaryComponentText = NO;
-    self.calendarView.selectedIndicatorColor = [UIColor orangeColor];
-    self.calendarView.localizedStringsOfWeekday = @[@"M",@"T",@"W",@"T",@"F",@"S",@"S"];
-    self.calendarView.localizedStringsOfMonths = @[@"Januar", @"Februar", @"March", @"April", @"May", @"June", @"July", @"August", @"September", @"October", @"November", @"December"];
+//    self.calendarView.boldPrimaryComponentText = NO;
+//    self.calendarView.selectedIndicatorColor = [UIColor orangeColor];
+//    self.calendarView.localizedStringsOfWeekday = @[@"M",@"T",@"W",@"T",@"F",@"S",@"S"];
+//    self.calendarView.localizedStringsOfMonths = @[@"Januar", @"Februar", @"March", @"April", @"May", @"June", @"July", @"August", @"September", @"October", @"November", @"December"];
+//
+//    self.calendarView.monthFont = [UIFont fontWithName:@"Avenir-Black" size:10.0];
+//    self.calendarView.weekdayFont = [UIFont fontWithName:@"Avenir-Black" size:10.0];
+//    self.calendarView.monthFont = [UIFont fontWithName:@"Avenir-Black" size:12.0];
+//    self.calendarView.dayFont = [UIFont fontWithName:@"Avenir-Black" size:15.0];
 
-    self.calendarView.monthFont = [UIFont fontWithName:@"Avenir-Black" size:10.0];
-    self.calendarView.weekdayFont = [UIFont fontWithName:@"Avenir-Black" size:10.0];
-    self.calendarView.monthFont = [UIFont fontWithName:@"Avenir-Black" size:12.0];
-    self.calendarView.dayFont = [UIFont fontWithName:@"Avenir-Black" size:15.0];
-    
     [self.calendarView reloadViewAnimated:NO];
 }
 
