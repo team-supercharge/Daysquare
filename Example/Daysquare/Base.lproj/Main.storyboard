@@ -17,8 +17,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="E2q-tT-SeM" customClass="DAYCalendarView">
-                                <rect key="frame" x="20" y="28" width="335" height="260"/>
+                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="E2q-tT-SeM" customClass="DAYCalendarView">
+                                <rect key="frame" x="30" y="28" width="335" height="260"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="260" id="Hho-Gd-mFl"/>
                                     <constraint firstAttribute="width" constant="335" id="uD9-Ik-YH7"/>

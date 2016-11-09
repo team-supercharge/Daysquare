@@ -28,7 +28,7 @@ Pod::Spec.new do |s|
   Get bored with native silly UIDatePicker? You may have a try on this control. Instead of showing you an awkward wheel, it just presents as a intuitive full-size calendar with a lot of preference properties that you can change.
                    DESC
 
-  s.homepage     = "https://github.com/unixzii/Daysquare"
+  s.homepage     = "https://github.com/team-supercharge/Daysquare"
 
 
   # ―――  Spec License  ――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
@@ -79,7 +79,7 @@ Pod::Spec.new do |s|
   #  Supports git, hg, bzr, svn and HTTP.
   #
 
-  s.source       = { :git => "https://github.com/unixzii/Daysquare.git", :commit => "2b3e547daf8c9e0ec1459be0c1508e84037a1345" }
+  s.source       = { :git => "https://github.com/team-supercharge/Daysquare", :commit => "f5bedc55f1494c36c94aaf8dcbd017dd012a47cc" }
 
 
   # ――― Source Code ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
