@@ -84,13 +84,13 @@
 
 - (void)commonInit {
     self.clipsToBounds = YES;
-    
+
     // Set visible viewport to one contains today by default.
     NSDate *todayDate = [NSDate dateWithTimeIntervalSinceNow:0];
     NSDateComponents *comps = [DAYUtils dateComponentsFromDate:todayDate];
     self->_visibleYear = comps.year;
     self->_visibleMonth = comps.month;
-    
+
     // Initialize default appearance settings.
     self.weekdayHeaderTextColor = [UIColor colorWithRed:0.40 green:0.40 blue:0.40 alpha:1];
     self.weekdayHeaderWeekendTextColor = [UIColor colorWithRed:0.75 green:0.25 blue:0.25 alpha:1];
@@ -99,13 +99,13 @@
     self.selectedIndicatorColor = [UIColor colorWithRed:0.74 green:0.18 blue:0.06 alpha:1];
     self.todayIndicatorColor = [UIColor colorWithRed:0.93 green:0.93 blue:0.93 alpha:1];
     self.indicatorRadius = 20;
-    self.boldPrimaryComponentText = YES;
-    
+    self.boldPrimaryComponentText = NO;
+
     self.navigationBar = [[DAYNavigationBar alloc] init];
     self.navigationBar.translatesAutoresizingMaskIntoConstraints = NO;
     self.navigationBar.textLabel.text = self.navigationBarTitle;
     [self.navigationBar addTarget:self action:@selector(navigationBarButtonDidTap:) forControlEvents:UIControlEventValueChanged];
-    
+
     [self addSubview:self.navigationBar];
     [self addConstraint:[NSLayoutConstraint constraintWithItem:self.navigationBar
                                                      attribute:NSLayoutAttributeTop
@@ -135,13 +135,13 @@
                                                                    attribute:NSLayoutAttributeNotAnAttribute
                                                                   multiplier:1.0
                                                                     constant:40]];
-    
+
     self.weekHeaderView = [[UIStackView alloc] init];
     self.weekHeaderView.translatesAutoresizingMaskIntoConstraints = NO;
     self.weekHeaderView.axis = UILayoutConstraintAxisHorizontal;
     self.weekHeaderView.distribution = UIStackViewDistributionFillEqually;
     self.weekHeaderView.alignment = UIStackViewAlignmentCenter;
-    
+
     [self addSubview:self.weekHeaderView];
     [self addConstraint:[NSLayoutConstraint constraintWithItem:self.weekHeaderView
                                                      attribute:NSLayoutAttributeTop
@@ -171,10 +171,10 @@
                                                                     attribute:NSLayoutAttributeNotAnAttribute
                                                                    multiplier:1.0
                                                                      constant:20]];
-    
+
     self.contentWrapperView = [[UIView alloc] init];
     self.contentWrapperView.translatesAutoresizingMaskIntoConstraints = NO;
-    
+
     [self addSubview:self.contentWrapperView];
     [self addConstraint:[NSLayoutConstraint constraintWithItem:self.contentWrapperView
                                                      attribute:NSLayoutAttributeTop
@@ -204,13 +204,13 @@
                                                      attribute:NSLayoutAttributeCenterX
                                                     multiplier:1.0
                                                       constant:0]];
-    
+
     self.contentView = [[UIStackView alloc] init];
     self.contentView.translatesAutoresizingMaskIntoConstraints = NO;
     self.contentView.axis = UILayoutConstraintAxisVertical;
     self.contentView.distribution = UIStackViewDistributionFillEqually;
     self.contentView.alignment = UIStackViewAlignmentFill;
-    
+
     [self.contentWrapperView addSubview:self.contentView];
     [self.contentWrapperView addConstraint:[NSLayoutConstraint constraintWithItem:self.contentView
                                                                         attribute:NSLayoutAttributeWidth
@@ -240,7 +240,7 @@
                                                                         attribute:NSLayoutAttributeCenterY
                                                                        multiplier:1.0
                                                                          constant:0]];
-    
+
     self.componentViews = [NSMutableArray array];
     [self makeUIElements];
 }
@@ -266,27 +266,27 @@
     self.todayIndicatorView = [[DAYIndicatorView alloc] init];
     self.todayIndicatorView.translatesAutoresizingMaskIntoConstraints = NO;
     self.todayIndicatorView.hidden = YES;
-    
+
     [self.contentWrapperView insertSubview:self.todayIndicatorView belowSubview:self.contentView];
     [self.contentWrapperView insertSubview:self.selectedIndicatorView belowSubview:self.contentView];
-    
+
     // Make weekday header view.
     for (int i = 1; i <= 7; i++) {
         UILabel *weekdayLabel = [[UILabel alloc] init];
         [self.weekHeaderView addArrangedSubview:weekdayLabel];
     }
-    
+
     // Make content view.
     __block int currentColumn = 0;
     __block UIStackView *currentRowView;
-    
+
     void (^makeRow)() = ^{
         currentRowView = [[UIStackView alloc] init];
         currentRowView.axis = UILayoutConstraintAxisHorizontal;
         currentRowView.distribution = UIStackViewDistributionFillEqually;
         currentRowView.alignment = UIStackViewAlignmentFill;
     };
-    
+
     void (^submitRowIfNecessary)() = ^{
         if (currentColumn >= 7) {
             [self.contentView addArrangedSubview:currentRowView];
@@ -294,16 +294,16 @@
             makeRow();
         }
     };
-    
+
     void (^submitCell)(UIView *) = ^(UIView *cellView) {
         [currentRowView addArrangedSubview:cellView];
         [self.componentViews addObject:(id) cellView];
         currentColumn++;
         submitRowIfNecessary();
     };
-    
+
     makeRow();
-    
+
     for (int i = 0; i < 42; i++) {
         DAYComponentView *componentView = [[DAYComponentView alloc] init];
         componentView.textLabel.textAlignment = NSTextAlignmentCenter;
@@ -319,12 +319,12 @@
 
 - (void)configureWeekdayHeaderView {
     BOOL canUseLocalizedStrings = self.localizedStringsOfWeekday && self.localizedStringsOfWeekday.count == 7;
-    
+
     [self.weekHeaderView.arrangedSubviews enumerateObjectsUsingBlock:^(__kindof UIView * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         UILabel *weekdayLabel = (id) obj;
         weekdayLabel.textAlignment = NSTextAlignmentCenter;
-        weekdayLabel.font = [UIFont systemFontOfSize:12];
-        weekdayLabel.textColor = (idx == 0 || idx == 6) ? self.weekdayHeaderWeekendTextColor : self.weekdayHeaderTextColor;
+        weekdayLabel.font = self.weekdayFont;
+        weekdayLabel.textColor = (idx == 5 || idx == 6) ? self.weekdayHeaderWeekendTextColor : self.weekdayHeaderTextColor;
         if (canUseLocalizedStrings) {
             weekdayLabel.text = self.localizedStringsOfWeekday[idx];
         }
@@ -339,7 +339,7 @@
     comps.day = day;
     comps.month = month;
     comps.year = year;
-    
+
     if ([DAYUtils isDateTodayWithDateComponents:comps]) {
         if (self.todayIndicatorView.hidden) {
             self.todayIndicatorView.hidden = NO;
@@ -351,7 +351,7 @@
         self.todayIndicatorView.attachingView = view;
         [self addConstraintToCenterIndicatorView:self.todayIndicatorView toView:view];
     }
-    
+
     view.containingEvent = nil;
     if (self.showUserEvents) {
         [self->_eventsInVisibleMonth enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
@@ -363,9 +363,9 @@
             }
         }];
     }
-    
+
     view.representedObject = comps;
-    
+
     if (self.selectedIndicatorView && self.selectedIndicatorView.attachingView == view) {
         [view setSelected:YES];
     }
@@ -376,32 +376,85 @@
     view.highlightTextColor = self.highlightedComponentTextColor;
     view.textLabel.alpha = self->_visibleMonth == month ? 1.0 : 0.5;
     if (self->_visibleMonth == month && self.boldPrimaryComponentText) {
-        view.textLabel.font = [UIFont boldSystemFontOfSize:16];
+        view.textLabel.font = self.dayFont;
     }
     else {
-        view.textLabel.font = [UIFont systemFontOfSize:16];
+        view.textLabel.font = self.dayFont;
     }
     view.textLabel.text = [NSString stringWithFormat:@"%d", (int) day];
 }
 
+- (void)setMonthFont:(UIFont *)monthFont
+{
+    _monthFont = monthFont;
+    [self reloadViewAnimated:NO];
+}
+
+- (void)setWeekdayFont:(UIFont *)weekdayFont
+{
+    _weekdayFont = weekdayFont;
+    [self reloadViewAnimated:NO];
+}
+
+- (void)setDayFont:(UIFont *)dayFont
+{
+    _dayFont = dayFont;
+    [self reloadViewAnimated:NO];
+}
+
+- (void)setDayColor:(UIColor *)dayColor
+{
+    _dayColor = dayColor;
+    self.componentTextColor = _dayColor;
+    [self reloadViewAnimated:NO];
+}
+
+- (void)setTitleColor:(UIColor *)titleColor
+{
+    _titleColor = titleColor;
+    self.navigationBar.textLabel.textColor = _titleColor;
+    [self reloadViewAnimated:NO];
+}
+
+- (void)setWeekDayColor:(UIColor *)weekDayColor
+{
+    _weekDayColor = weekDayColor;
+    self.weekdayHeaderTextColor = _weekDayColor;
+    [self reloadViewAnimated:NO];
+}
+
+- (void)setWeekDayColorDisabled:(UIColor *)weekDayColorDisabled
+{
+    _weekDayColorDisabled = weekDayColorDisabled;
+    self.weekdayHeaderWeekendTextColor = _weekDayColorDisabled;
+    [self reloadViewAnimated:NO];
+}
+
+- (void)setTitleFont:(UIFont *)titleFont
+{
+    _titleFont = titleFont;
+    self.navigationBar.textLabel.font = _titleFont;
+    [self reloadViewAnimated:NO];
+}
+
 - (void)configureContentView {
     NSUInteger pointer = 0;
-    
+
     NSUInteger totalDays = [DAYUtils daysInMonth:self->_visibleMonth ofYear:self->_visibleYear];
     NSUInteger paddingDays = [DAYUtils firstWeekdayInMonth:self->_visibleMonth ofYear:self->_visibleYear] - 1;
-    
+
     // Handle user events displaying.
     if (self.showUserEvents) {
         NSDateComponents *startComps = [[NSDateComponents alloc] init];
         startComps.year = self->_visibleYear;
         startComps.month = self->_visibleMonth;
         startComps.day = 1;
-        
+
         NSDateComponents *endComps = [[NSDateComponents alloc] init];
         endComps.year = self->_visibleYear;
         endComps.month = self->_visibleMonth;
         endComps.day = totalDays;
-        
+
         NSPredicate *predicate = [self.eventStore predicateForEventsWithStartDate:[DAYUtils dateFromDateComponents:startComps]
                                                                           endDate:[DAYUtils dateFromDateComponents:endComps]
                                                                         calendars:nil];
@@ -410,25 +463,25 @@
     else {
         self->_eventsInVisibleMonth = nil;
     }
-    
+
     // Make padding days.
     NSUInteger paddingYear = self->_visibleMonth == 1 ? self->_visibleYear - 1 : self->_visibleYear;
     NSUInteger paddingMonth = self->_visibleMonth == 1 ? 12 : self->_visibleMonth - 1;
     NSUInteger totalDaysInLastMonth = [DAYUtils daysInMonth:paddingMonth ofYear:paddingYear];
-    
+
     for (int j = (int) paddingDays - 1; j >= 0; j--) {
         [self configureComponentView:self.componentViews[pointer++] withDay:totalDaysInLastMonth - j month:paddingMonth year:paddingYear];
     }
-    
+
     // Make days in current month.
     for (int j = 0; j < totalDays; j++) {
         [self configureComponentView:self.componentViews[pointer++] withDay:j + 1 month:self->_visibleMonth year:self->_visibleYear];
     }
-    
+
     // Make days in next month to fill the remain cells.
     NSUInteger reserveYear = self->_visibleMonth == 12 ? self->_visibleYear + 1 : self->_visibleYear;
     NSUInteger reserveMonth = self->_visibleMonth == 12 ? 1 : self->_visibleMonth + 1;
-    
+
     for (int j = 0; self.componentViews.count - pointer > 0; j++) {
         [self configureComponentView:self.componentViews[pointer++] withDay:j + 1 month:reserveMonth year:reserveYear];
     }
@@ -440,21 +493,21 @@
             [self.contentWrapperView removeConstraint:obj];
         }
     }];
-    
+
     [self.contentWrapperView addConstraint:[NSLayoutConstraint constraintWithItem:view
-                                                          attribute:NSLayoutAttributeCenterX
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:toView
-                                                          attribute:NSLayoutAttributeCenterX
-                                                         multiplier:1.0
-                                                           constant:0]];
+                                                                        attribute:NSLayoutAttributeCenterX
+                                                                        relatedBy:NSLayoutRelationEqual
+                                                                           toItem:toView
+                                                                        attribute:NSLayoutAttributeCenterX
+                                                                       multiplier:1.0
+                                                                         constant:0]];
     [self.contentWrapperView addConstraint:[NSLayoutConstraint constraintWithItem:view
-                                                          attribute:NSLayoutAttributeCenterY
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:toView
-                                                          attribute:NSLayoutAttributeCenterY
-                                                         multiplier:1.0
-                                                           constant:0]];
+                                                                        attribute:NSLayoutAttributeCenterY
+                                                                        relatedBy:NSLayoutRelationEqual
+                                                                           toItem:toView
+                                                                        attribute:NSLayoutAttributeCenterY
+                                                                       multiplier:1.0
+                                                                         constant:0]];
     [view addConstraint:[NSLayoutConstraint constraintWithItem:view
                                                      attribute:NSLayoutAttributeWidth
                                                      relatedBy:NSLayoutRelationEqual
@@ -472,8 +525,26 @@
 }
 
 - (NSString *)navigationBarTitle {
-    NSString *stringOfMonth = [DAYUtils stringOfMonthInEnglish:self->_visibleMonth];
-    return [NSString stringWithFormat:@"%@ %lu", stringOfMonth, (unsigned long) self->_visibleYear];
+    BOOL canUseLocalizedStrings = self.localizedStringsOfMonths && self.localizedStringsOfMonths.count == 12;
+    if (canUseLocalizedStrings)
+    {
+        NSUInteger idx = self->_visibleMonth;
+        NSString *stringOfMonth = _localizedStringsOfMonths[idx - 1];
+        return [NSString stringWithFormat:@"%@ %lu", stringOfMonth, (unsigned long) self->_visibleYear];
+    }
+    else
+    {
+        NSString *stringOfMonth = [DAYUtils stringOfMonthInEnglish:self->_visibleMonth];
+        return [NSString stringWithFormat:@"%@ %lu", stringOfMonth, (unsigned long) self->_visibleYear];
+    }
+}
+
+- (void)setLocalizedStringsOfMonths:(NSArray<NSString *> *)localizedStringsOfMonths
+{
+    _localizedStringsOfMonths = localizedStringsOfMonths;
+    self.navigationBar.textLabel.text = self.navigationBarTitle;
+    // TODO: letter spacing
+    [self reloadViewAnimated:NO];
 }
 
 - (DAYComponentView *)componentViewForDateComponents:(NSDateComponents *)comps {
@@ -485,7 +556,7 @@
             *stop = YES;
         }
     }];
-    
+
     return view;
 }
 
@@ -494,11 +565,11 @@
         case DAYNaviagationBarCommandPrevious:
             [self jumpToPreviousMonth];
             break;
-            
+
         case DAYNaviagationBarCommandNext:
             [self jumpToNextMonth];
             break;
-            
+
         default:
             break;
     }
@@ -506,18 +577,18 @@
 
 - (void)componentDidTap:(DAYComponentView *)sender {
     NSDateComponents *comps = sender.representedObject;
-    
+
     if (comps.year != self->_visibleYear || comps.month != self->_visibleMonth) {
         [self jumpToMonth:comps.month year:comps.year];
         return;
     }
-    
+
     if (self.selectedIndicatorView.hidden) {
         self.selectedIndicatorView.hidden = NO;
         self.selectedIndicatorView.transform = CGAffineTransformMakeScale(0, 0);
         self.selectedIndicatorView.attachingView = sender;
         [self addConstraintToCenterIndicatorView:self.selectedIndicatorView toView:sender];
-        
+
         [UIView animateWithDuration:0.5 delay:0 usingSpringWithDamping:0.7 initialSpringVelocity:0 options:kNilOptions animations:^{
             self.selectedIndicatorView.transform = CGAffineTransformIdentity;
             [sender setSelected:YES];
@@ -525,17 +596,17 @@
     }
     else {
         [self addConstraintToCenterIndicatorView:self.selectedIndicatorView toView:sender];
-        
+
         [UIView animateWithDuration:0.3 delay:0 usingSpringWithDamping:0.8 initialSpringVelocity:0 options:kNilOptions animations:^{
             [self.contentWrapperView layoutIfNeeded];
-            
+
             [((DAYComponentView *) self.selectedIndicatorView.attachingView) setSelected:NO];
             [sender setSelected:YES];
         } completion:nil];
-        
+
         self.selectedIndicatorView.attachingView = sender;
     }
-    
+
     self->_selectedDate = [DAYUtils dateFromDateComponents:comps];
     [self sendActionsForControlEvents:UIControlEventValueChanged];
 }
@@ -551,7 +622,7 @@
             obj.alpha = 1;
         }
     }];
-    
+
     self.todayIndicatorView.alpha = self.todayIndicatorView.attachingView.superview.hidden ? 0 : 1;
     self.selectedIndicatorView.alpha = self.selectedIndicatorView.attachingView.superview.hidden ? 0 : 1;
 }
@@ -560,7 +631,7 @@
     [self configureIndicatorViews];
     [self configureWeekdayHeaderView];
     [self configureContentView];
-    
+
     if (animated) {
         [UIView transitionWithView:self duration:0.5 options:UIViewAnimationOptionTransitionCrossDissolve animations:nil completion:nil];
     }
@@ -574,17 +645,17 @@
             ++self->_currentVisibleRow;
             [UIView transitionWithView:self.contentWrapperView duration:0.4 options:UIViewAnimationOptionTransitionFlipFromTop animations:nil completion:nil];
             [self updateCurrentVisibleRow];
-            
+
             return;
         }
         else {
             self->_currentVisibleRow = 0;
         }
     }
-    
+
     NSUInteger nextMonth;
     NSUInteger nextYear;
-    
+
     if (self->_visibleMonth >= 12) {
         nextMonth = 1;
         nextYear = self->_visibleYear + 1;
@@ -593,9 +664,9 @@
         nextMonth = self->_visibleMonth + 1;
         nextYear = self->_visibleYear;
     }
-    
+
     [self jumpToMonth:nextMonth year:nextYear];
-    
+
     if (self.singleRowMode) {
         [self updateCurrentVisibleRow];
     }
@@ -607,17 +678,17 @@
             --self->_currentVisibleRow;
             [UIView transitionWithView:self.contentWrapperView duration:0.4 options:UIViewAnimationOptionTransitionFlipFromBottom animations:nil completion:nil];
             [self updateCurrentVisibleRow];
-            
+
             return;
         }
         else {
             self->_currentVisibleRow = 5;
         }
     }
-    
+
     NSUInteger prevMonth;
     NSUInteger prevYear;
-    
+
     if (self->_visibleMonth <= 1) {
         prevMonth = 12;
         prevYear = self->_visibleYear - 1;
@@ -626,9 +697,9 @@
         prevMonth = self->_visibleMonth - 1;
         prevYear = self->_visibleYear;
     }
-    
+
     [self jumpToMonth:prevMonth year:prevYear];
-    
+
     if (self.singleRowMode) {
         [self updateCurrentVisibleRow];
     }
@@ -642,40 +713,40 @@
     else {
         direction = year > self->_visibleYear;
     }
-    
+
     self->_visibleMonth = month;
     self->_visibleYear = year;
     self->_selectedDate = nil;
-    
+
     // Deal with indicator views.
     self.todayIndicatorView.hidden = YES;
     self.todayIndicatorView.attachingView = nil;
     self.selectedIndicatorView.attachingView = nil;
-    
+
     [UIView transitionWithView:self.navigationBar.textLabel duration:0.3 options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
         self.navigationBar.textLabel.text = self.navigationBarTitle;
     } completion:nil];
-    
+
     UIView *snapshotView = [self.contentWrapperView snapshotViewAfterScreenUpdates:NO];
     snapshotView.frame = self.contentWrapperView.frame;
     [self addSubview:snapshotView];
-    
+
     [self configureContentView];
-    
+
     self.contentView.transform = CGAffineTransformMakeTranslation(0, CGRectGetHeight(self.contentView.frame) / 3 * (direction ? 1 : -1));
     self.contentView.alpha = 0;
-    
+
     [UIView animateWithDuration:0.35 delay:0 usingSpringWithDamping:0.72 initialSpringVelocity:0 options:kNilOptions animations:^{
         snapshotView.transform = CGAffineTransformMakeTranslation(0, -CGRectGetHeight(self.contentView.frame) / 2 * (direction ? 1 : -1));
         snapshotView.alpha = 0;
-        
+
         self.selectedIndicatorView.transform = CGAffineTransformMakeScale(0, 0);
-        
+
         self.contentView.transform = CGAffineTransformIdentity;
         self.contentView.alpha = 1;
     } completion:^(BOOL finished) {
         [snapshotView removeFromSuperview];
-        
+
         if (!self.selectedDate) {
             self.selectedIndicatorView.hidden = YES;
         }

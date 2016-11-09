@@ -1,0 +1,33 @@
+{
+  'version': 0,
+  'case-sensitive': 'false',
+  'roots': [
+    {
+      'type': 'directory',
+      'name': "/Users/csabavido/Work/Daysquare/Example/Build/Products/Debug-iphoneos/Lib.framework/Headers",
+      'contents': [
+        {
+          'type': 'file',
+          'name': "Lib-Swift.h",
+          'external-contents': "/Users/csabavido/Work/Daysquare/Example/Build/Products/Debug-iphoneos/Lib.framework/Headers/Lib-Swift.h"
+        },
+        {
+          'type': 'file',
+          'name': "Lib.h",
+          'external-contents': "/Users/csabavido/Work/Daysquare/Example/Lib/Lib.h"
+        }
+      ]
+    },
+    {
+      'type': 'directory',
+      'name': "/Users/csabavido/Work/Daysquare/Example/Build/Products/Debug-iphoneos/Lib.framework/Modules",
+      'contents': [
+        {
+          'type': 'file',
+          'name': "module.modulemap",
+          'external-contents': "/Users/csabavido/Work/Daysquare/Example/Build/Intermediates/Daysquare.build/Debug-iphoneos/Lib.build/module.modulemap"
+        }
+      ]
+    }
+  ]
+}

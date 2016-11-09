@@ -10,10 +10,6 @@
 
 @interface DAYNavigationBar ()
 
-@property (strong, nonatomic) UILabel *textLabel;
-@property (strong, nonatomic) UIButton *prevButton;
-@property (strong, nonatomic) UIButton *nextButton;
-
 @property (readwrite, assign, nonatomic) DAYNaviagationBarCommand lastCommand;
 
 @end
@@ -63,7 +59,7 @@
     self.prevButton = [UIButton buttonWithType:UIButtonTypeCustom];
     self.prevButton.translatesAutoresizingMaskIntoConstraints = NO;
     self.prevButton.tintColor = [UIColor grayColor];
-    [self.prevButton setBackgroundImage:[[UIImage imageNamed:@"prev"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
+    [self.prevButton setTitle:@"<" forState:UIControlStateNormal];
     [self.prevButton addTarget:self action:@selector(prevButtonDidTap:) forControlEvents:UIControlEventTouchUpInside];
     
     [self addSubview:self.prevButton];
@@ -100,7 +96,7 @@
     self.nextButton = [UIButton buttonWithType:UIButtonTypeCustom];
     self.nextButton.translatesAutoresizingMaskIntoConstraints = NO;
     self.nextButton.tintColor = [UIColor grayColor];
-    [self.nextButton setBackgroundImage:[[UIImage imageNamed:@"next"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
+    [self.nextButton setTitle:@">" forState:UIControlStateNormal];
     [self.nextButton addTarget:self action:@selector(nextButtonDidTap:) forControlEvents:UIControlEventTouchUpInside];
     
     [self addSubview:self.nextButton];
