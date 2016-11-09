@@ -99,7 +99,7 @@
     self.selectedIndicatorColor = [UIColor colorWithRed:0.74 green:0.18 blue:0.06 alpha:1];
     self.todayIndicatorColor = [UIColor colorWithRed:0.93 green:0.93 blue:0.93 alpha:1];
     self.indicatorRadius = 20;
-    self.boldPrimaryComponentText = YES;
+    self.boldPrimaryComponentText = NO;
     
     self.navigationBar = [[DAYNavigationBar alloc] init];
     self.navigationBar.translatesAutoresizingMaskIntoConstraints = NO;
@@ -323,8 +323,8 @@
     [self.weekHeaderView.arrangedSubviews enumerateObjectsUsingBlock:^(__kindof UIView * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         UILabel *weekdayLabel = (id) obj;
         weekdayLabel.textAlignment = NSTextAlignmentCenter;
-        weekdayLabel.font = [UIFont systemFontOfSize:12];
-        weekdayLabel.textColor = (idx == 0 || idx == 6) ? self.weekdayHeaderWeekendTextColor : self.weekdayHeaderTextColor;
+        weekdayLabel.font = self.weekdayFont;
+        weekdayLabel.textColor = (idx == 5 || idx == 6) ? self.weekdayHeaderWeekendTextColor : self.weekdayHeaderTextColor;
         if (canUseLocalizedStrings) {
             weekdayLabel.text = self.localizedStringsOfWeekday[idx];
         }
@@ -376,13 +376,65 @@
     view.highlightTextColor = self.highlightedComponentTextColor;
     view.textLabel.alpha = self->_visibleMonth == month ? 1.0 : 0.5;
     if (self->_visibleMonth == month && self.boldPrimaryComponentText) {
-        view.textLabel.font = [UIFont boldSystemFontOfSize:16];
+        view.textLabel.font = self.dayFont;
     }
     else {
-        view.textLabel.font = [UIFont systemFontOfSize:16];
+        view.textLabel.font = self.dayFont;
     }
     view.textLabel.text = [NSString stringWithFormat:@"%d", (int) day];
 }
+
+- (void)setMonthFont:(UIFont *)monthFont
+{
+    _monthFont = monthFont;
+    self.navigationBar.textLabel.font = _monthFont;
+    self.navigationBar.nextButton.font = _monthFont;
+    self.navigationBar.prevButton.font = _monthFont;
+    [self reloadViewAnimated:NO];
+}
+
+- (void)setWeekdayFont:(UIFont *)weekdayFont
+{
+    _weekdayFont = weekdayFont;
+    [self reloadViewAnimated:NO];
+}
+
+- (void)setDayFont:(UIFont *)dayFont
+{
+    _dayFont = dayFont;
+    [self reloadViewAnimated:NO];
+}
+
+- (void)setDayColor:(UIColor *)dayColor
+{
+    _dayColor = dayColor;
+    self.componentTextColor = _dayColor;
+    [self reloadViewAnimated:NO];
+}
+
+- (void)setTitleColor:(UIColor *)titleColor
+{
+    _titleColor = titleColor;
+    self.navigationBar.textLabel.textColor = _titleColor;
+    [self.navigationBar.prevButton setTitleColor:_titleColor forState:UIControlStateNormal];
+    [self.navigationBar.nextButton setTitleColor:_titleColor forState:UIControlStateNormal];
+    [self reloadViewAnimated:NO];
+}
+
+- (void)setWeekDayColor:(UIColor *)weekDayColor
+{
+    _weekDayColor = weekDayColor;
+    self.weekdayHeaderTextColor = _weekDayColor;
+    [self reloadViewAnimated:NO];
+}
+
+- (void)setWeekDayColorDisabled:(UIColor *)weekDayColorDisabled
+{
+    _weekDayColorDisabled = weekDayColorDisabled;
+    self.weekdayHeaderWeekendTextColor = _weekDayColorDisabled;
+    [self reloadViewAnimated:NO];
+}
+
 
 - (void)configureContentView {
     NSUInteger pointer = 0;
@@ -472,8 +524,26 @@
 }
 
 - (NSString *)navigationBarTitle {
-    NSString *stringOfMonth = [DAYUtils stringOfMonthInEnglish:self->_visibleMonth];
-    return [NSString stringWithFormat:@"%@ %lu", stringOfMonth, (unsigned long) self->_visibleYear];
+    BOOL canUseLocalizedStrings = self.localizedStringsOfMonths && self.localizedStringsOfMonths.count == 12;
+    if (canUseLocalizedStrings)
+    {
+        NSUInteger idx = self->_visibleMonth;
+        NSString *stringOfMonth = _localizedStringsOfMonths[idx - 1];
+        return [NSString stringWithFormat:@"%@ %lu", stringOfMonth, (unsigned long) self->_visibleYear];
+    }
+    else
+    {
+        NSString *stringOfMonth = [DAYUtils stringOfMonthInEnglish:self->_visibleMonth];
+        return [NSString stringWithFormat:@"%@ %lu", stringOfMonth, (unsigned long) self->_visibleYear];
+    }
+}
+
+- (void)setLocalizedStringsOfMonths:(NSArray<NSString *> *)localizedStringsOfMonths
+{
+    _localizedStringsOfMonths = localizedStringsOfMonths;
+    self.navigationBar.textLabel.text = self.navigationBarTitle;
+    // TODO: letter spacing
+    [self reloadViewAnimated:NO];
 }
 
 - (DAYComponentView *)componentViewForDateComponents:(NSDateComponents *)comps {

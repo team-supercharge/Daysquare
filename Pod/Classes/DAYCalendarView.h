@@ -9,11 +9,22 @@
 #import <UIKit/UIKit.h>
 #import <EventKit/EventKit.h>
 
+IB_DESIGNABLE
 @interface DAYCalendarView : UIControl
 
 @property (copy, nonatomic) NSDate *selectedDate;
 
 @property (copy, nonatomic) NSArray<NSString *> *localizedStringsOfWeekday;
+@property (copy, nonatomic) NSArray<NSString *> *localizedStringsOfMonths;
+
+@property (nonatomic, strong) UIFont *monthFont;
+@property (nonatomic, strong) UIFont *weekdayFont;
+@property (nonatomic, strong) UIFont *dayFont;
+
+@property (nonatomic, strong) IBInspectable UIColor *titleColor;
+@property (nonatomic, strong) IBInspectable UIColor *weekDayColor;
+@property (nonatomic, strong) IBInspectable UIColor *weekDayColorDisabled;
+@property (nonatomic, strong) IBInspectable UIColor *dayColor;
 
 // Appearance settings:
 @property (copy, nonatomic) UIColor *weekdayHeaderTextColor;

@@ -43,7 +43,7 @@
 
 + (NSUInteger)firstWeekdayInMonth:(NSUInteger)month ofYear:(NSUInteger)year {
     NSDate *date = [self dateWithMonth:month year:year];
-    return [[self localCalendar] component:NSCalendarUnitWeekday fromDate:date];
+    return [[self localCalendar] component:NSCalendarUnitWeekday fromDate:date] - 1;
 }
 
 + (NSString *)stringOfWeekdayInEnglish:(NSUInteger)weekday {
@@ -51,7 +51,7 @@
     static NSArray *Strings;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        Strings = @[@"Sun", @"Mon", @"Tues", @"Wed", @"Thur", @"Fri", @"Sat"];
+        Strings = @[@"Mon", @"Tues", @"Wed", @"Thur", @"Fri", @"Sat",@"Sun"];
     });
     
     return Strings[weekday - 1];
